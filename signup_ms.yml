@@ -1,0 +1,328 @@
+#Test with: http://editor.swagger.io/
+
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Sign Up Microservice
+  description: Ruby + MySQL Database
+  contact:
+      name: Group B
+      email: juasmartinezbel@unal.edu.co 
+  license:
+    name: Software Architecture 2017-II
+    
+host: 192.168.99.101:3000
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /auth:
+    post:
+      summary: Registers a new User
+      parameters:
+        - name: auth
+          in: body
+          required: true
+          description: Creates a new user in the database
+          schema:
+            $ref: '#/definitions/UsersSignUp'
+            
+      responses:
+        '200':
+          description: User created successfully.
+          schema:
+            $ref: "#/definitions/UserCreated"
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '422':
+          description: Unprocessable Entity.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  
+  /auth/sign_in:
+    post:
+      summary: Creates a new session
+      parameters:
+        - name: auth
+          in: body
+          required: true
+          description: User logged in successfully
+          schema:
+            $ref: '#/definitions/Login'
+            
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInf'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '401':
+          description: Unathorized
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+      
+  /users/{id}:
+    get:
+      summary: User {id} profile
+      parameters:
+        - name: id
+          in: path
+          description: Returns the user given it's id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Users'
+        '404':
+          description: Not found.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+            
+  /email:
+    post:
+      summary: Returns an User by it's email
+      parameters:
+        - name: auth
+          in: body
+          required: true
+          description: Email of the user to find
+          schema:
+            $ref: '#/definitions/SearchEmail'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Users"
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '404':
+          description: User not Found.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+  /users/{id}/:
+    put:
+      summary: Edits the User logged in
+      
+      parameters:
+        - name: id
+          in: path
+          description: Edits the user given it's id
+          required: true
+          type: integer
+        - name: auth
+          in: body
+          required: true
+          description: Edits the user if he is logged in
+          schema:
+            $ref: '#/definitions/UsersEdit'
+              
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Users'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '422':
+          description: Unprocessable Entity.
+          schema:
+            $ref: '#/definitions/ParameterError'
+        '500':
+          description: Internal Server Error.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+
+  /username:
+    post:
+      summary: Returns an User by it's Username
+      parameters:
+        - name: auth
+          in: body
+          required: true
+          description: Username of the user to find
+          schema:
+            $ref: '#/definitions/SearchUsername'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Users"
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '404':
+          description: User not Found.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+definitions:
+
+  Users:
+    type: object 
+    properties:
+      id:
+        type: integer
+      email:
+        type: string 
+      username:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+  
+  UsersSignUp:
+    type: object 
+    properties:
+      email:
+        type: string 
+      password:
+        type: string
+      username:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+  UsersEdit:
+    type: object 
+    properties:
+      username:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+        
+  UserInf:
+    type: object
+    properties:
+        id: 
+          type: integer
+        email:
+          type: string
+        provider:
+          type: string
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        uid:
+          type: string
+  
+  UserCreated:
+    type: object 
+    properties:
+      status:
+        type: string 
+      data:
+        type: object
+        properties:
+          id: 
+            type: integer
+          email:
+            type: string
+          provider:
+            type: string
+          username:
+            type: string
+          first_name:
+            type: string
+          last_name:
+            type: string
+          uid:
+            type: string
+          created_at:
+            type: string
+          updated_at:
+            type: string
+          
+
+  Login:
+    type: object 
+    properties:
+      email:
+        type: string 
+      password:
+        type: string
+        
+  SearchEmail:
+    type: object 
+    properties:
+      email:
+        type: string
+
+  SearchUsername:
+    type: object 
+    properties:
+      username:
+        type: string
+# Errors
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: number
+      description:
+        type: object
+    
+  ParameterError:
+    type: object
+    required:
+      - message
+      - code
+      - data
+      - errors
+    properties:
+      message: 
+        type: string
+      code:
+        type: number
+      data:
+        $ref:  '#/definitions/UsersSignUp'
+      errors:
+        type: object
