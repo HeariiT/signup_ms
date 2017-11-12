@@ -1,6 +1,6 @@
 Started GET "/" for 127.0.0.1 at 2017-10-28 19:08:10 -0500
   
-Mysql2::Error (Unknown MySQL server host 'signup_db' (0)):
+Mysql2::Error (Unknown MySQL server host 'signup-db' (0)):
   
 mysql2 (0.4.9) lib/mysql2/client.rb:89:in `connect'
 mysql2 (0.4.9) lib/mysql2/client.rb:89:in `initialize'
@@ -45,7 +45,7 @@ puma (3.10.0) lib/puma/server.rb:301:in `block in run'
 puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
 Started GET "/favicon.ico" for 127.0.0.1 at 2017-10-28 19:08:10 -0500
   
-Mysql2::Error (Unknown MySQL server host 'signup_db' (0)):
+Mysql2::Error (Unknown MySQL server host 'signup-db' (0)):
   
 mysql2 (0.4.9) lib/mysql2/client.rb:89:in `connect'
 mysql2 (0.4.9) lib/mysql2/client.rb:89:in `initialize'
